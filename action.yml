@@ -1,5 +1,5 @@
 # action.yml
-name: "Deploy workspace to repo"
+name: "Deploy workspace folder to repo"
 description: "Push files generated during the workflow run to an external repository"
 author: "Volker Wieban <mail@hpcodecraft.me>"
 runs:
