@@ -1,0 +1,10 @@
+# action.yml
+name: "Deploy workspace to repo"
+description: "Push files generated during the workflow run to an external repository"
+author: "Volker Wieban <mail@hpcodecraft.me>"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  icon: "upload-cloud"
+  color: "black"
