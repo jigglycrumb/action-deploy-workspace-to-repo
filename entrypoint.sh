@@ -12,26 +12,27 @@ COMMIT_MESSAGE=$(jq '.commits[0].message' ${GITHUB_EVENT_PATH})
 git config --global user.email "${COMMIT_EMAIL}"
 git config --global user.name "${COMMIT_NAME}"
 
-REPOSITORY_PATH="https://${GITHUB_ACCESS_TOKEN}@github.com/$DEST_OWNER/$DEST_REPO.git"
+DEST_REPO_PATH="https://${GITHUB_ACCESS_TOKEN}@github.com/$DEST_OWNER/$DEST_REPO.git"
 
 echo "⭐️ Cloning $DEST_REPO"
 cd $GITHUB_WORKSPACE
-git clone $REPOSITORY_PATH
+git clone $DEST_REPO_PATH
 
 echo "⭐️ Cleaning old files"
-cd ./$DEST_REPO
+cd $DEST_REPO
 eval "$DEST_PREDEPLOY_CLEANUP"
 
-echo "⭐️ Coping files from $SRC_FOLDER"
-cd ../$SRC_FOLDER
-cp -R * ../$DEST_REPO/$DEST_FOLDER
+echo "⭐️ Copying files from $SRC_FOLDER"
+mkdir -p $GITHUB_WORKSPACE/$DEST_REPO/$DEST_FOLDER # in case the folder was deleted by cleanup
+cd $GITHUB_WORKSPACE/$SRC_FOLDER
+cp -R * $GITHUB_WORKSPACE/$DEST_REPO/$DEST_FOLDER
 
 echo "⭐️ Commiting changes with message: $COMMIT_MESSAGE"
-cd ../$DEST_REPO
+cd $GITHUB_WORKSPACE/$DEST_REPO
 git add .
-git commit -m "Release: $COMMIT_MESSAGE"
+git commit -m "Automated release: $(date)\n$COMMIT_MESSAGE"
 
 echo "⭐️ Pushing changes to $DEST_BRANCH"
-git push $REPOSITORY_PATH $DEST_BRANCH
+git push $DEST_REPO_PATH $DEST_BRANCH
 
 echo "⭐️ Finished"
