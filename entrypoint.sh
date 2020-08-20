@@ -7,8 +7,8 @@ echo "⭐️ Configuring git"
 apk add jq
 COMMIT_EMAIL=$(jq '.pusher.email' ${GITHUB_EVENT_PATH})
 COMMIT_NAME=$(jq '.pusher.name' ${GITHUB_EVENT_PATH})
-#COMMIT_MESSAGE=$(jq '.commits[0].message' ${GITHUB_EVENT_PATH})
-COMMIT_SHA=$(jq '.commits[0].sha' ${GITHUB_EVENT_PATH})
+# COMMIT_MESSAGE=$(jq '.commits[0].message' ${GITHUB_EVENT_PATH})
+# COMMIT_SHA=$(jq '.commits[0].sha' ${GITHUB_EVENT_PATH})
 
 git config --global user.email "${COMMIT_EMAIL}"
 git config --global user.name "${COMMIT_NAME}"
@@ -31,7 +31,7 @@ cp -R * $GITHUB_WORKSPACE/$DEST_REPO/$DEST_FOLDER
 echo "⭐️ Committing changes"
 cd $GITHUB_WORKSPACE/$DEST_REPO
 git add .
-git commit -m "Automated release: $(date '+%Y-%m-%d, %H:%M:%S') ($COMMIT_SHA)"
+git commit -m "Automated release: $(date '+%Y-%m-%d, %H:%M:%S')"
 
 echo "⭐️ Pushing changes to $DEST_BRANCH"
 git push $DEST_REPO_PATH $DEST_BRANCH

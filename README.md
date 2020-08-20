@@ -32,7 +32,7 @@ jobs:
         npm install
         npm run build
     - name: Release build
-      uses: hpcodecraft/action-deploy-workspace-to-repo@v2.1
+      uses: hpcodecraft/action-deploy-workspace-to-repo@v2.2
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         SRC_FOLDER: dist
